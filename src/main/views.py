@@ -5,4 +5,5 @@ from django.shortcuts import render
 
 
 def test(request):
+    print(13)
     return render(request, "main.html")

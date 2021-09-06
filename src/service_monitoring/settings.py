@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/3.1/ref/settings/
 import os
 from pathlib import Path
 
+from celery.schedules import crontab
 from dotenv import load_dotenv, find_dotenv
 
 load_dotenv(find_dotenv())
@@ -30,7 +31,7 @@ SECRET_KEY = 'u*u$ps!^^bge20yba&1reu8*k$6((ek2-%x^dlc)ar_g-u+xy!'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["app", 'localhost', '127.0.0.1']
 
 
 # Application definition
@@ -83,9 +84,9 @@ DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql_psycopg2",
         "NAME": os.environ.get("DB_NAME", "service_monitoring"),
-        "USER": os.environ.get("DB_USER", "postgres"),
-        "PASSWORD": os.environ.get("DB_PASSWORD", "root"),
-        "HOST": os.environ.get("DB_HOST", "127.0.0.1"),
+        "USER": os.environ.get("DB_USER", "service_monitoring"),
+        "PASSWORD": os.environ.get("DB_PASSWORD", "service_monitoring"),
+        "HOST": os.environ.get("DB_HOST", "postgres"),
         "PORT": os.environ.get("DB_PORT", "5432"),
     }
 
@@ -130,3 +131,13 @@ USE_TZ = True
 
 STATIC_URL = "/static/"
 STATIC_ROOT = "static"
+
+REDIS_CONNECTION = os.environ.get("REDIS_CONNECTION", "redis://localhost:6379/0")
+CELERY_BROKER_URL = REDIS_CONNECTION
+CELERY_BEAT_SCHEDULE = {
+    "print_smth": {
+        "task": "api.tasks.print_smth",
+        "schedule": crontab(minute="*/2"),
+        "args": (),
+    },
+}
