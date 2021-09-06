@@ -1,129 +1,17 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-    <link rel="stylesheet" href="../static/node_modules/bootstrap/dist/css/bootstrap.min.css">
-    <link rel="stylesheet" href="../static/css/main-style.css">
-</head>
-<body>
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <div class="container-fluid">
-        <a class="navbar-brand" href="#">Мониторинг</a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
-                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav">
-                <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" href="#">Home</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Features</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Pricing</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
-                </li>
-            </ul>
-        </div>
-    </div>
-</nav>
+{% extends 'base.html' %}
+{% load static %}
 
-<div class="container">
+{% block title %}Главная{% endblock %}
+
+
+{% block content %}
     <div class="page-status status-none">
         <span class="status font-large">Все системы работают</span>
     </div>
 
 
     <div class="info_items">
-        <div class="info_item">
-            <div class="info_item-info">
-                <div class="info_item-name-status">
-                    <span class="info_item-name">Название</span>
-                    <div class="info_item-status">
-                        <a>Работает.</a>
-                    </div>
-                </div>
-                <div class="info_item-shards">
-                    <div class="info__item--lines">
-                        <div class="main__vertical">
-                            <div class="block_vertical"></div>
-                            <div class="popup">
-                                <div class="popup__date">
-                                    20 Jul 2021
-                                </div>
-                                <div class="popup__text">No result</div>
-                            </div>
-                        </div>
-
-                        <div class="main__vertical">
-                            <div class="block_vertical"></div>
-                            <div class="popup">
-                                <div class="popup__date">
-                                    20 Jul 2021
-                                </div>
-                                <div class="popup__text">No result</div>
-                            </div>
-                        </div>
-                         <div class="main__vertical ">
-                            <div class="block_vertical block__error"></div>
-                            <div class="popup">
-                                <div class="popup__date">
-                                    20 Jul 2021
-                                </div>
-                                <div class="popup__error--block">
-                                    <h4 class="popup__error--title">Я ошибка</h4>
-                                    <span class="popup__error--time">
-                                        <span class="popup__error--hours">02 hrs</span>
-                                        <span class="popup__error--minutes">33 mins</span>
-                                    </span>
-                                </div>
-                                <div class="popup__text">
-                                    <h4 class="popup__text--title">Ошибка</h4>
-                                    <p class="popup__text--text">error in ok.ru</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="legend">
-                        <div class="legend_item">
-                            <span>60 дней назад</span>
-                        </div>
-                        <div class="spacer"></div>
-                        <div class="legend_item">100 %</div>
-                        <div class="spacer"></div>
-                        <div class="legend_item">
-                            <span>Сегодня</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="info_item">
-            <div class="info_item-info">
-                <div class="info_item-name-status">
-                    <span class="info_item-name">Название</span>
-                    <div class="info_item-status">
-                        <a>Работает.</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="info_item">
-            <div class="info_item-info">
-                <div class="info_item-name-status">
-                    <span class="info_item-name">Название</span>
-                    <div class="info_item-status">
-                        <a>Работает.</a>
-                    </div>
-                </div>
-            </div>
-        </div>
+        {% include 'partials/check_item.html' %}
     </div>
 
 
@@ -131,79 +19,6 @@
         <a class="font-largest no-link">
             Сбои
         </a>
-        <div class="spacer"></div>
-        <div class="status-day font-regular no-incidents">
-            <div class="date border-color font-large">
-                03.09.2021
-            </div>
-            <p class="color-secondary">
-                Без инцидентов.
-            </p>
-        </div>
-        <div class="spacer"></div>
-        <div class="status-day font-regular no-incidents">
-            <div class="date border-color font-large">
-                02.09.2021
-            </div>
-            <p class="color-secondary">
-                Без инцидентов.
-            </p>
-        </div>
-        <div class="spacer"></div>
-
-        <div class="status-day font-regular no-incidents">
-            <div class="date border-color font-large">
-                01.09.2021
-            </div>
-            <p class="color-secondary">
-                Без инцидентов.
-            </p>
-        </div>
-        <div class="spacer"></div>
-
-        <div class="status-day font-regular no-incidents">
-            <div class="date border-color font-large">
-                31.08.2021
-            </div>
-            <p class="color-secondary">
-                Без инцидентов.
-            </p>
-        </div>
-        <div class="spacer"></div>
-        <div class="status-day font-regular">
-            <div class="date border-color font-large">
-                31.08.2021
-            </div>
-            <div class="incident-container">
-                <div class="incident-title impact-minor font-large">
-                    <a href="#">Деградация бла бла бла бла бла</a>
-                </div>
-                <div class="updates-container">
-                    <div class="update font-regular resolved">
-                        <strong>Решено</strong>
-                        -
-                        С 15:18 до 15:26 наблюдалась деградация сервиса лояльности.
-                        <br>
-                        <br>
-                        Также в этот период не работала часть функциональности административного сайта, например,
-                        создание и редактирование рассылок.
-                        <br>
-                        <br>
-                        На данный момент работа всех сервисов происходит в штатном режиме.
-                        <br>
-                        <br>
-                        <small>
-                            31.08.2021
-                        </small>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="spacer"></div>
-
+        {% include 'partials/incident_item.html' %}
     </div>
-</div>
-<script src="../static/node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
-</body>
-
-</html>
+{% endblock %}
