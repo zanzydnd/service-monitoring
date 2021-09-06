@@ -21,4 +21,4 @@ COPY --from=node /app/src/main/static /app/src/main/static
 
 RUN python3 src/manage.py collectstatic --noinput
 
-CMD python3 src/manage.py migrate && gunicorn service_monitoring.wsgi --chdir src --bind 0.0.0.0 --preload --log-file -
+CMD python3 src/manage.py migrate && python3 src/manage.py initadmin && gunicorn service_monitoring.wsgi --chdir src --bind 0.0.0.0 --preload --log-file -
