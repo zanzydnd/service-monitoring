@@ -12,6 +12,9 @@ class Database(models.Model):
         verbose_name = "База для проверки"
         verbose_name_plural = "Базы для проверок"
 
+    def __str__(self):
+        return self.db_name
+
 
 class DatabaseFieldsToCheck(models.Model):
     # type = select, insert

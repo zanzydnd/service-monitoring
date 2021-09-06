@@ -8,7 +8,7 @@ COPY src/main/static/ .
 
 FROM python:3.8
 ENV PYTHONBUFFERED 1
-
+ENV SECRETWORD SECRET
 WORKDIR /app
 COPY requirements.txt .
 RUN pip install -r requirements.txt
