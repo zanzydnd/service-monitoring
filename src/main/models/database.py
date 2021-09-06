@@ -2,10 +2,16 @@ from django.db import models
 
 
 class Database(models.Model):
+    DB_VARIANTS = [
+        ("My_sql", "My_sql"),
+        ("PostgreSQL", "PostgreSQL")
+    ]
+
     db_name = models.CharField(max_length=250)
     db_ip = models.CharField(max_length=13)
     db_username = models.CharField(max_length=300)
     db_password = models.CharField(max_length=300)
+    rmdb = models.CharField(choices=DB_VARIANTS, default="PostgreSQL", max_length=100)
 
     class Meta:
         db_table = "_database_"
@@ -17,7 +23,12 @@ class Database(models.Model):
 
 
 class DatabaseFieldsToCheck(models.Model):
-    # type = select, insert
+    SQL_TYPES = [
+        ("select", "select"),
+        ("insert", "insert")
+    ]
+
+    type = models.CharField(max_length=100, choices=SQL_TYPES, default="select")
     table_name_to_check = models.CharField(max_length=200)
     where_statement = models.CharField(max_length=100)
     data_base = models.ForeignKey(Database, on_delete=models.CASCADE, related_name="sql_requests_to_check")
