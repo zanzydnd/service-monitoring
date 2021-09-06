@@ -1,0 +1,18 @@
+version: '3'
+
+services:
+  redis:
+    image: redis:6-alpine
+    ports:
+      - 6379:6379
+
+  celery:
+    build: .
+    container_name: "celery_beat_schedule"
+    command: celery -A core worker -B
+    volumes:
+      - .:/code
+    links:
+      - redis
+    depends_on:
+      - redis
