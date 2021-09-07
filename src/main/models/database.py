@@ -8,7 +8,7 @@ class Database(models.Model):
     ]
 
     db_name = models.CharField(max_length=250)
-    db_ip = models.CharField(max_length=13)
+    db_ip = models.CharField(max_length=100)
     db_username = models.CharField(max_length=300)
     db_password = models.CharField(max_length=300)
     rmdb = models.CharField(choices=DB_VARIANTS, default="PostgreSQL", max_length=100)
@@ -30,7 +30,7 @@ class DatabaseFieldsToCheck(models.Model):
 
     type = models.CharField(max_length=100, choices=SQL_TYPES, default="select")
     table_name_to_check = models.CharField(max_length=200)
-    where_statement = models.CharField(max_length=100, null=True)
+    where_statement = models.CharField(max_length=100, null=True,blank=True)
     data_base = models.ForeignKey(Database, on_delete=models.CASCADE, related_name="sql_requests_to_check")
     is_empty = models.BooleanField(default=False)
 
@@ -42,7 +42,7 @@ class DatabaseFieldsToCheck(models.Model):
 
 class Result(models.Model):
     colour = models.CharField(max_length=50)
-    description = models.CharField(max_length=100)
+    description = models.CharField(max_length=1000)
 
     class Meta:
         db_table = "sql_request_result"

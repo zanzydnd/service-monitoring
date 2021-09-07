@@ -1,26 +1,35 @@
+import traceback
+
+import psycopg2
+
 from main.models import Result, DatabaseMonitoring
 
 
-def postgreSql_execute_request(cursor, database, requests):
+def postgreSql_execute_request(conn, database, requests):
     for request in requests:
         try:
-            cursor.execute(request[0])
+            print(request[0])
+            with conn.cursor() as cursor:
+                cursor.execute(request[0])
             result = Result(colour="#2fcc66", description="Ok")
             result.save()
             monitor = DatabaseMonitoring(result=result, sql_request=request[1])
             monitor.save()
-        except Exception as e:
+            conn.commit()
+        except (Exception, psycopg2.DatabaseError) as e:
+            conn.rollback()
+            traceback.print_exc()
             result = Result(colour="orange", description=str(e))
             result.save()
             monitor = DatabaseMonitoring(result=result, sql_request=request[1])
             monitor.save()
+    conn.close()
 
-
-def postgreSql_make_request(cursor, database):
+def postgreSql_make_request(conn, database):
     requests_combined = []
 
     for request_raw in database.sql_requests_to_check.all():
-        if request.is_empty:
+        if request_raw.is_empty:
             continue
         request = "" + request_raw.type
         if request_raw.type == "select":
@@ -32,4 +41,4 @@ def postgreSql_make_request(cursor, database):
         else:
             pass
 
-    postgreSql_execute_request(requests_combined)
+    postgreSql_execute_request(conn, database, requests_combined)

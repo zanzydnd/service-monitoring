@@ -43,6 +43,8 @@ services:
   celery-beat:
     <<: *app
     working_dir: /app/src
+    depends_on:
+      - celery
     command: celery -A service_monitoring beat -l debug
     ports: [ ]
     volumes: [ ]
