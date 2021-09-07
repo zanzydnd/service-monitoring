@@ -1,5 +1,4 @@
 from main.models import Result, DatabaseMonitoring
-import psycopg2
 
 
 def postgreSql_execute_request(cursor, database, requests):
@@ -10,8 +9,8 @@ def postgreSql_execute_request(cursor, database, requests):
             result.save()
             monitor = DatabaseMonitoring(result=result, sql_request=request[1])
             monitor.save()
-        except psycopg2.Error as e:
-            result = Result(colour="red", description=e.pgerror)
+        except Exception as e:
+            result = Result(colour="orange", description=str(e))
             result.save()
             monitor = DatabaseMonitoring(result=result, sql_request=request[1])
             monitor.save()
@@ -21,6 +20,8 @@ def postgreSql_make_request(cursor, database):
     requests_combined = []
 
     for request_raw in database.sql_requests_to_check.all():
+        if request.is_empty:
+            continue
         request = "" + request_raw.type
         if request_raw.type == "select":
             request += " * from " + request_raw.table_name_to_check

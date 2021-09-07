@@ -30,8 +30,9 @@ class DatabaseFieldsToCheck(models.Model):
 
     type = models.CharField(max_length=100, choices=SQL_TYPES, default="select")
     table_name_to_check = models.CharField(max_length=200)
-    where_statement = models.CharField(max_length=100)
+    where_statement = models.CharField(max_length=100, null=True)
     data_base = models.ForeignKey(Database, on_delete=models.CASCADE, related_name="sql_requests_to_check")
+    is_empty = models.BooleanField(default=False)
 
     class Meta:
         db_table = "database_sql_requests_constructor"
