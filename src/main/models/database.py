@@ -1,4 +1,5 @@
 from django.db import models
+from django.utils import timezone
 
 
 class Database(models.Model):
@@ -39,11 +40,24 @@ class DatabaseFieldsToCheck(models.Model):
         verbose_name = "Запрос, который будет проверяться."
         verbose_name_plural = "Запросы, которые будут проверяться."
 
+    def __str__(self):
+        if self.is_empty:
+            return "Empty request"
+        request = "" + str(self.type)
+        if self.type == "select":
+            request += " * from " + str(self.table_name_to_check)
+            if self.where_statement:
+                request += " where " + str(self.where_statement)
+            request += " limit 3"
+        else:
+            pass
+        return request
+
 
 class Result(models.Model):
     colour = models.CharField(max_length=50)
     description = models.CharField(max_length=1000)
-    date = models.DateTimeField(auto_now=True, auto_created=True)
+    date = models.DateTimeField(default=timezone.now, editable=False)
     sql_request = models.ForeignKey(DatabaseFieldsToCheck, on_delete=models.CASCADE, related_name="results",
                                     default=None)
 

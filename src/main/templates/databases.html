@@ -5,12 +5,74 @@
 
 
 {% block content %}
-    <div class="page-status status-none">
-        <span class="status font-large">Все системы работают</span>
-    </div>
 
     <div class="info_items">
-        {% include 'partials/check_item.html' %}
+        {% for database in database_dto %}
+            <div class="info_item">
+                <div class="info_item-info">
+                    <div class="info_item-name-status">
+                        <span class="info_item-name">{{ database.database.db_name }}</span>
+                        <div class="info_item-status"
+                             {% if database.status == "Впорядке" %}style="color: limegreen"
+                             {% else %} style="color: red"{% endif %}>
+                            <a>{{ database.status }}</a>
+                        </div>
+                    </div>
+                    <div class="info_item-shards">
+                        <div class="info__item--lines">
+                            {% for sql in database.last_results %}
+
+                                {% if sql.colour != "#2fcc66" %}
+                                    <div class="main__vertical ">
+                                        <div class="block_vertical block__error"
+                                             style="background-color: {{ sql.colour }}"></div>
+                                        <div class="popup">
+                                            <div class="popup__date">
+                                                {{ sql.date }}
+                                            </div>
+                                            <div class="popup__error--block">
+                                                <h4 class="popup__error--title"></h4>
+                                                <span class="popup__error--time">
+                                        {% comment %}<span class="popup__error--hours">02 hrs</span>
+                                        <span class="popup__error--minutes">33 mins</span>{% endcomment %}
+                                    </span>
+                                            </div>
+                                            <div class="popup__text">
+                                                <h4 class="popup__text--title">Ошибка</h4>
+                                                <p class="popup__text--text">{{ sql.description }}</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                {% else %}
+                                    <div class="main__vertical">
+                                        <div class="block_vertical"></div>
+                                        <div class="popup">
+                                            <div class="popup__date">
+                                                {{ sql.date }}
+                                            </div>
+                                            <div class="popup__text">Ok</div>
+                                        </div>
+                                    </div>
+                                {% endif %}
+                            {% endfor %}
+
+                        </div>
+
+                        <div class="legend">
+                            <div class="legend_item">
+                                <span>{{ database.count }} запросов назад</span>
+                            </div>
+                            <div class="spacer"></div>
+                            <div class="legend_item">100 %</div>
+                            <div class="spacer"></div>
+                            <div class="legend_item">
+                                <span>Сейчас</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
     </div>
 
 
