@@ -8,7 +8,7 @@ from service_monitoring.celery import app
 logger = logging.getLogger(__name__)
 
 
-@app.task(queue="default")
+@app.task
 def check_databases():
     databases = Database.objects.all()
     for database in databases:
@@ -16,10 +16,10 @@ def check_databases():
             try:
                 conn = psycopg2.connect(dbname=database.db_name, user=database.db_username,
                                         password=database.db_password, host=database.db_ip)
-                result = postgreSql_make_request(conn.cursor(), database)
+                postgreSql_make_request(conn.cursor(), database)
                 conn.close()
-            except Exception as e:
-                result = Result(colour="red", description=str(e))
+            except psycopg2.OperationalError as e:
+                result = Result(colour="red", description="Не установлено соединение с базой данных")
                 result.save()
                 sql_request = DatabaseFieldsToCheck(table_name_to_check="Connection error", is_empty=True,
                                                     data_base=database)

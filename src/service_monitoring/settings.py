@@ -132,11 +132,11 @@ USE_TZ = True
 STATIC_URL = "/static/"
 STATIC_ROOT = "static"
 
-REDIS_CONNECTION = os.environ.get("REDIS_CONNECTION", "redis://localhost:6379/0")
+REDIS_CONNECTION = os.environ.get("REDIS_CONNECTION", "redis://redis:6379")
 CELERY_BROKER_URL = REDIS_CONNECTION
 CELERY_BEAT_SCHEDULE = {
     "check_databases": {
-        "task": "api.tasks.check_databases",
+        "task": "main.tasks.check_databases",
         "schedule": crontab(minute="*/2"),
         "args": (),
     },
