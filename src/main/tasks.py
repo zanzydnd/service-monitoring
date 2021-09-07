@@ -1,7 +1,7 @@
 import logging
 import psycopg2
 
-from main.models import Database, Result, DatabaseMonitoring, DatabaseFieldsToCheck
+from main.models import Database, Result, DatabaseFieldsToCheck
 from main.services.database_service import postgreSql_make_request
 from service_monitoring.celery import app
 
@@ -19,12 +19,11 @@ def check_databases():
                 postgreSql_make_request(conn, database)
             except psycopg2.OperationalError as e:
                 print(e)
-                result = Result(colour="red", description="Не установлено соединение с базой данных")
-                result.save()
                 sql_request = DatabaseFieldsToCheck(table_name_to_check="Connection error", is_empty=True,
                                                     data_base=database)
                 sql_request.save()
-                monitor = DatabaseMonitoring(result=result, sql_request=sql_request)
-                monitor.save()
+                result = Result(colour="red", description="Не установлено соединение с базой данных",
+                                sql_request=sql_request)
+                result.save()
         elif database.rmdb == "My_sql":
             pass

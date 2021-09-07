@@ -2,7 +2,7 @@ import traceback
 
 import psycopg2
 
-from main.models import Result, DatabaseMonitoring
+from main.models import Result
 
 
 def postgreSql_execute_request(conn, database, requests):
@@ -11,19 +11,16 @@ def postgreSql_execute_request(conn, database, requests):
             print(request[0])
             with conn.cursor() as cursor:
                 cursor.execute(request[0])
-            result = Result(colour="#2fcc66", description="Ok")
+            result = Result(colour="#2fcc66", description="Ok", sql_request=request[1])
             result.save()
-            monitor = DatabaseMonitoring(result=result, sql_request=request[1])
-            monitor.save()
             conn.commit()
         except (Exception, psycopg2.DatabaseError) as e:
             conn.rollback()
             traceback.print_exc()
-            result = Result(colour="orange", description=str(e))
+            result = Result(colour="orange", description=str(e), sql_request=request[1])
             result.save()
-            monitor = DatabaseMonitoring(result=result, sql_request=request[1])
-            monitor.save()
     conn.close()
+
 
 def postgreSql_make_request(conn, database):
     requests_combined = []

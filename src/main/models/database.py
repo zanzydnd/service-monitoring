@@ -30,7 +30,7 @@ class DatabaseFieldsToCheck(models.Model):
 
     type = models.CharField(max_length=100, choices=SQL_TYPES, default="select")
     table_name_to_check = models.CharField(max_length=200)
-    where_statement = models.CharField(max_length=100, null=True,blank=True)
+    where_statement = models.CharField(max_length=100, null=True, blank=True)
     data_base = models.ForeignKey(Database, on_delete=models.CASCADE, related_name="sql_requests_to_check")
     is_empty = models.BooleanField(default=False)
 
@@ -43,20 +43,11 @@ class DatabaseFieldsToCheck(models.Model):
 class Result(models.Model):
     colour = models.CharField(max_length=50)
     description = models.CharField(max_length=1000)
+    date = models.DateTimeField(auto_now=True, auto_created=True)
+    sql_request = models.ForeignKey(DatabaseFieldsToCheck, on_delete=models.CASCADE, related_name="results",
+                                    default=None)
 
     class Meta:
         db_table = "sql_request_result"
         verbose_name = "Результат Запроса"
         verbose_name_plural = "Результаты Запросов"
-
-
-class DatabaseMonitoring(models.Model):
-    sql_request = models.ForeignKey(DatabaseFieldsToCheck, on_delete=models.DO_NOTHING,
-                                    related_name="sql_request_results")
-    result = models.ForeignKey(Result, on_delete=models.CASCADE, related_name="sql_requests")
-    date = models.DateField(auto_now=True)
-
-    class Meta:
-        db_table = "sql_request"
-        verbose_name = "Запрос в базу данных(выполненный)"
-        verbose_name_plural = "Запросы в базу данных(выполненные)"

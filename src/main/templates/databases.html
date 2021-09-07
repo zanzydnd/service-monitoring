@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Главная{% endblock %}
+
+
+{% block content %}
+    <div class="page-status status-none">
+        <span class="status font-large">Все системы работают</span>
+    </div>
+
+    <div class="info_items">
+        {% include 'partials/check_item.html' %}
+    </div>
+
+
+{% endblock %}

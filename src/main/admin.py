@@ -4,7 +4,7 @@ from django.core.exceptions import ValidationError
 from django.forms import ModelForm
 from django.contrib import admin
 
-from main.models import Database, DatabaseFieldsToCheck, Result, DatabaseMonitoring
+from main.models import Database, DatabaseFieldsToCheck, Result
 from main.services.hash_service import jwt_string
 
 
@@ -29,4 +29,3 @@ class CustomAdminDatabase(admin.ModelAdmin):
 admin.site.register(Database, CustomAdminDatabase)
 admin.site.register(DatabaseFieldsToCheck)
 admin.site.register(Result)
-admin.site.register(DatabaseMonitoring)
