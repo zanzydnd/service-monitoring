@@ -33,8 +33,6 @@
                                             <div class="popup__error--block">
                                                 <h4 class="popup__error--title"></h4>
                                                 <span class="popup__error--time">
-                                        {% comment %}<span class="popup__error--hours">02 hrs</span>
-                                        <span class="popup__error--minutes">33 mins</span>{% endcomment %}
                                     </span>
                                             </div>
                                             <div class="popup__text">
@@ -63,7 +61,7 @@
                                 <span>{{ database.count }} запросов назад</span>
                             </div>
                             <div class="spacer"></div>
-                            <div class="legend_item">100 %</div>
+                            <div class="legend_item">{{ database.status_int }} %</div>
                             <div class="spacer"></div>
                             <div class="legend_item">
                                 <span>Сейчас</span>
