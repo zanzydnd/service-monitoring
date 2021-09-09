@@ -15,11 +15,11 @@ jobs:
         env:
           HOST: ${{ secrets.HOST }}
           USERNAME: ${{ secrets.USERNAME }}
-          KEY: ${{ secrets.SECRET_KEY }}
+          PASSWORD: ${{ secrets.SECRET_KEY }}
         with:
           host: ${{ secrets.HOST }}
           username: ${{ secrets.USERNAME }}
-          key: ${{ secrets.SECRET_KEY }}
+          password: ${{ secrets.SECRET_KEY }}
           source: "."
           target: "/root/service-monitoring"
 
@@ -28,7 +28,7 @@ jobs:
         with:
           host: ${{ secrets.HOST }}
           username: ${{ secrets.USERNAME }}
-          key: ${{ secrets.SECRET_KEY }}
+          password: ${{ secrets.SECRET_KEY }}
           script: |
             docker kill $(docker ps -q)
 
