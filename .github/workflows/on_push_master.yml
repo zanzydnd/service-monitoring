@@ -4,12 +4,12 @@ on:
   push:
     branches:
       - master
-
+    branches-ignore:
+      - develop
 jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
-      - name: Deploy
       - uses: actions/checkout@v2
       - uses: appleboy/ssh-action@master
         with:
@@ -18,7 +18,8 @@ jobs:
           key: ${{ secrets.SECRET_KEY }}
           port: ${{ secrets.PORT }}
           script: |
-            git pull origin master
+            cd dist && rsync -e "ssh -i .HOME/.ssh/key -o StrictHostKeyChecking=no" --archive --compress --delete .
+            ${{secrets.USER_NAME}}@${{secrets.HOST}}:/root/service-monitoring/
 
             docker kill $(docker ps -q)
 
