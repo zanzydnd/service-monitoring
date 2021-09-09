@@ -10,18 +10,29 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - uses: appleboy/ssh-action@master
-        with:
-          host: ${{ secrets.HOST }}
-          username: ${{ secrets.USERNAME }}
-          key: ${{ secrets.SECRET_KEY }}
-          port: ${{ secrets.PORT }}
-          script: |
-            cd dist && rsync -e "ssh -i .HOME/.ssh/key -o StrictHostKeyChecking=no" --archive --compress --delete .
-            ${{secrets.USER_NAME}}@${{secrets.HOST}}:/root/service-monitoring/
 
+      - name: Copy repository
+        uses: appleboy/ssh-action@master
+        env:
+          HOST: ${{ secrets.HOST }}
+          USERNAME: ${{ secrets.USERNAME }}
+          KEY: ${{ secrets.SECRET_KEY }}
+          PORT: ${{ secrets.PORT }}
+        with:
+          source: "."
+          target: "/root/service-monitoring"
+
+        - name: Executing remote command
+          uses: appleboy/ssh-action@master
+          with:
+          host: ${{ secrets.HOST }}
+          USERNAME: ${{ secrets.USERNAME }}
+          PORT: ${{ secrets.PORT }}
+          KEY: ${{ secrets.SECRET_KEY }}
+          script: |
             docker kill $(docker ps -q)
 
             docker system prune -a
 
             docker-compose up --build --remove-orphans
+
