@@ -1,4 +1,4 @@
-name: CI/CD 
+name: CI/CD
 
 on:
   push:
@@ -16,12 +16,10 @@ jobs:
           HOST: ${{ secrets.HOST }}
           USERNAME: ${{ secrets.USERNAME }}
           KEY: ${{ secrets.SECRET_KEY }}
-          PORT: ${{ secrets.PORT }}
         with:
           host: ${{ secrets.HOST }}
           username: ${{ secrets.USERNAME }}
           key: ${{ secrets.SECRET_KEY }}
-          port: ${{ secrets.PORT }}
           source: "."
           target: "/root/service-monitoring"
 
@@ -30,7 +28,6 @@ jobs:
         with:
           host: ${{ secrets.HOST }}
           username: ${{ secrets.USERNAME }}
-          port: ${{ secrets.PORT }}
           key: ${{ secrets.SECRET_KEY }}
           script: |
             docker kill $(docker ps -q)
