@@ -137,7 +137,7 @@ CELERY_BROKER_URL = REDIS_CONNECTION
 CELERY_BEAT_SCHEDULE = {
     "check_databases": {
         "task": "main.tasks.check_databases",
-        "schedule": crontab(minute="*/2"),
+        "schedule": crontab(minute="*/10"),
         "args": (),
     },
 }
