@@ -22,10 +22,10 @@ jobs:
           source: "."
           target: "/root/service-monitoring"
 
-        - name: Executing remote command
-          uses: appleboy/ssh-action@master
-          with:
-          host: ${{ secrets.HOST }}
+      - name: Executing remote command
+        uses: appleboy/ssh-action@master
+        with:
+          HOST: ${{ secrets.HOST }}
           USERNAME: ${{ secrets.USERNAME }}
           PORT: ${{ secrets.PORT }}
           KEY: ${{ secrets.SECRET_KEY }}
@@ -35,4 +35,3 @@ jobs:
             docker system prune -a
 
             docker-compose up --build --remove-orphans
-
