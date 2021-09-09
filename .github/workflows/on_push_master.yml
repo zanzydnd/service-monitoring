@@ -1,4 +1,4 @@
-name: CI/CD 
+name: CI/CD
 
 on:
   push:
@@ -19,6 +19,10 @@ jobs:
           KEY: ${{ secrets.SECRET_KEY }}
           PORT: ${{ secrets.PORT }}
         with:
+          HOST: ${{ secrets.HOST }}
+          USERNAME: ${{ secrets.USERNAME }}
+          KEY: ${{ secrets.SECRET_KEY }}
+          PORT: ${{ secrets.PORT }}
           source: "."
           target: "/root/service-monitoring"
 
