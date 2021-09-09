@@ -13,6 +13,6 @@ jobs:
     steps:
       - name: deploy
         uses: actions/checkout@v2
-      - run: docker kill $(docker ps -q)
+      - run: docker container kill $(docker ps -q)
       - run: docker system prune -a
       - run: docker-compose up --build --remove-orphans
