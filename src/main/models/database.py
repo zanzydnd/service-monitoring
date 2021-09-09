@@ -53,7 +53,7 @@ class DatabaseFieldsToCheck(models.Model):
             pass
         return request
 
-
+#database.all().result__[:90]
 class Result(models.Model):
     colour = models.CharField(max_length=50)
     description = models.CharField(max_length=1000)

@@ -21,7 +21,7 @@ class DatabasesView(ListView):
         qs = Database.objects.all()
         result_queryset = []
         for database in qs:
-            results = Result.objects.filter(sql_request__data_base__id=database.id).order_by("date")[:90]
+            results = Result.objects.filter(sql_request__data_base__id=database.id).order_by("-date")[:90]
             dto = DatabaseDTO(database=database, last_results=results)
             result_queryset.append(dto)
         context['database_dto'] = result_queryset

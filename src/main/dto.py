@@ -10,6 +10,7 @@ class DatabaseDTO():
 
         self.status_int = self.status_int / self.last_results.count()
 
+        self.last_results = reversed(kwargs['last_results'])
         self.status = "Впорядке"
         if self.status_int <= 0.5:
             self.status = "Сбои"

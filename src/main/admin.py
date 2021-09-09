@@ -19,7 +19,7 @@ class DatabaseForm(ModelForm):
 
     class Meta:
         model = Database
-        fields = ['db_name', 'db_ip', 'db_username', 'db_password', 'rmdb']
+        fields = ['db_name', 'db_ip', 'db_username', 'db_password', 'rmdb', 'db_port']
 
 
 class CustomAdminDatabase(admin.ModelAdmin):

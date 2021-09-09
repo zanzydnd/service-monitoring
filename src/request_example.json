@@ -1,0 +1,24 @@
+/api/register/
+{
+  "parser_name": "parser_name",
+}
+response:
+code: 200
+{
+  "your_token": "asdadsasdadasd"
+}
+
+/api/report/
+{
+  "token" : "token",
+  "parser_name": "name",
+  "status": "ok/not_critical/critical",
+  "exception_message": "...",
+  "description": "..."
+}
+
+response:
+code: 200/500
+{
+  "status" : "ok/smth_went_wrong"
+}
