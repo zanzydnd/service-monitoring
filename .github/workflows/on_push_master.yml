@@ -1,4 +1,4 @@
-name: CI/CD
+name: CI/CD via ssh
 
 on:
   push:
