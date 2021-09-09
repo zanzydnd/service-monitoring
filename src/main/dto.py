@@ -8,7 +8,8 @@ class DatabaseDTO():
             if result.colour == "#2fcc66":
                 self.status_int += 1
 
-        self.status_int = self.status_int / self.last_results.count()
+        if  self.last_results.count() != 0:
+            self.status_int = self.status_int / self.last_results.count()
 
         self.last_results = reversed(kwargs['last_results'])
         self.status = "Впорядке"
