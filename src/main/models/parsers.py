@@ -3,7 +3,7 @@ from django.utils import timezone
 
 
 class Parser(models.Model):
-    name = models.CharField(max_length=1000)
+    name = models.CharField(max_length=1000, unique=True)
     token = models.CharField(max_length=1000)
 
     def __str__(self):
