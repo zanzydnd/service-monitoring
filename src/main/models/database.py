@@ -14,6 +14,7 @@ class Database(models.Model):
     db_password = models.CharField(max_length=300)
     rmdb = models.CharField(choices=DB_VARIANTS, default="PostgreSQL", max_length=100)
     db_port = models.IntegerField(default=5432)
+
     class Meta:
         db_table = "_database_"
         verbose_name = "База для проверки"
@@ -53,7 +54,7 @@ class DatabaseFieldsToCheck(models.Model):
             pass
         return request
 
-#database.all().result__[:90]
+
 class Result(models.Model):
     colour = models.CharField(max_length=50)
     description = models.CharField(max_length=1000)
