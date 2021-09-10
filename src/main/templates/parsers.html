@@ -3,32 +3,31 @@
 
 {% block title %}Базы данных{% endblock %}
 
-
 {% block content %}
 
     <div class="info_items">
-        {% for database in database_dto %}
+        {% for parser in parser_dto %}
             <div class="info_item">
                 <div class="info_item-info">
                     <div class="info_item-name-status">
-                        <span class="info_item-name">{{ database.database.db_name }}</span>
+                        <span class="info_item-name">{{ parser.parser.name }}</span>
                         <div class="info_item-status"
-                             {% if database.status == "Впорядке" %}style="color: limegreen"
+                             {% if parser.status == "Впорядке" %}style="color: limegreen"
                              {% else %} style="color: red"{% endif %}>
-                            <a>{{ database.status }}</a>
+                            <a>{{ parser.status }}</a>
                         </div>
                     </div>
                     <div class="info_item-shards">
                         <div class="info__item--lines">
-                            {% for sql in database.last_results %}
+                            {% for report in parser.last_reports %}
 
-                                {% if sql.colour != "#2fcc66" %}
+                                {% if report.status != "ok" %}
                                     <div class="main__vertical ">
                                         <div class="block_vertical block__error"
-                                             style="background-color: {{ sql.colour }}"></div>
+                                             style="background-color: {% if report.status == "not_critical" %} orange {% else %} red {% endif %}"></div>
                                         <div class="popup">
                                             <div class="popup__date">
-                                                {{ sql.date }}
+                                                {{ report.report_date }}
                                             </div>
                                             <div class="popup__error--block">
                                                 <h4 class="popup__error--title"></h4>
@@ -37,7 +36,7 @@
                                             </div>
                                             <div class="popup__text">
                                                 <h4 class="popup__text--title">Ошибка</h4>
-                                                <p class="popup__text--text">{{ sql.description }}</p>
+                                                <p class="popup__text--text">{{ report.description }}</p>
                                             </div>
                                         </div>
                                     </div>
@@ -46,7 +45,7 @@
                                         <div class="block_vertical"></div>
                                         <div class="popup">
                                             <div class="popup__date">
-                                                {{ sql.date }}
+                                                {{ report.report_date }}
                                             </div>
                                             <div class="popup__text">Ok</div>
                                         </div>
@@ -58,10 +57,10 @@
 
                         <div class="legend">
                             <div class="legend_item">
-                                <span>{{ database.count }} запросов назад</span>
+                                <span>{{ parser.count }} запросов назад</span>
                             </div>
                             <div class="spacer"></div>
-                            <div class="legend_item">{{ database.status_int }} %</div>
+                            <div class="legend_item">{{ parser.status_int }} %</div>
                             <div class="spacer"></div>
                             <div class="legend_item">
                                 <span>Сейчас</span>
@@ -72,6 +71,4 @@
             </div>
         {% endfor %}
     </div>
-
-
 {% endblock %}

@@ -28,6 +28,8 @@ class ReportParserSerializer(serializers.ModelSerializer):
             self.parser = Parser.objects.get(name=data['name'])
             if self.parser.token != data['token']:
                 raise serializers.ValidationError("Bad credentials.")
+            if data['status'] not in ['ok', 'not_critical', 'critical']:
+                raise serializers.ValidationError("Enter the right status. Choices are: ok/not_critical/critical.")
             return data
         except models.ObjectDoesNotExist as e:
             raise serializers.ValidationError("Нет такого имени.")

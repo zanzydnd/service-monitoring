@@ -3,8 +3,8 @@ from django.shortcuts import render
 # Create your views here.
 from django.views.generic import ListView
 
-from main.dto import DatabaseDTO
-from main.models import Database, Result
+from main.dto import DatabaseDTO, ParserDTO
+from main.models import Database, Result, Parser, ParserReport
 
 
 def test(request):
@@ -28,3 +28,18 @@ class DatabasesView(ListView):
         return context
 
 
+class ParsersView(ListView):
+    template_name = "parsers.html"
+    context_object_name = "parsers"
+    model = Parser
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        qs = Parser.objects.all()
+        result_queryset = []
+        for parser in qs:
+            reports = ParserReport.objects.filter(parser=parser).order_by("-report_date")[:90]
+            dto = ParserDTO(parser=parser, last_reports=reports)
+            result_queryset.append(dto)
+        context['parser_dto'] = result_queryset
+        return context
