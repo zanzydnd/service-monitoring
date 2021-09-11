@@ -8,17 +8,20 @@
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav">
                 <li class="nav-item">
-                    <a class="nav-link {% if url_name == 'main' %} active {% endif %}" aria-current="page"
+                    <a class="nav-link {% if url_name == 'main' %} active {% endif %}" {% if url_name == 'main' %}
+                       aria-current="page" {% endif %}
                        href="{% url 'main' %}">Главная</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link {% if 'databases' in url_name %} active {% endif %}" href="{% url 'databases' %}">Базы Данных</a>
+                    <a class="nav-link {% if 'databases' in url_name %} active {% endif %}" href="{% url 'databases' %}"
+                            {% if url_name == 'databases' %} aria-current="page" {% endif %}>Базы Данных</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Парсеры</a>
+                    <a class="nav-link {% if 'parsers' in url_name %} active {% endif %}"
+                       href="{% url 'parsers' %}"{% if url_name == 'parsers' %}  aria-current="page" {% endif %}>Парсеры</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Парсеры Методы</a>
+                    <a class="nav-link disabled" aria-disabled="true" href="#">Парсеры Методы</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Апи</a>
