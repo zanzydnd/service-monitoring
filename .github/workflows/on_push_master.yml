@@ -16,4 +16,4 @@ jobs:
       - run: docker-compose stop
       - run: docker-compose rm -f
       - run: docker volume rm service-monitoring_static
-      - run: docker-compose up -d
+      - run: docker-compose up -d --build
