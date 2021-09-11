@@ -42,7 +42,6 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'main',
     "rest_framework",
-    "drf_yasg",
     "api"
 ]
 

@@ -5,7 +5,6 @@ from rest_framework.generics import CreateAPIView
 from rest_framework.response import Response
 
 from api.serializers import RegisterParserSerializer, ReportParserSerializer
-from main.models import Parser
 
 
 class RegisterParserView(CreateAPIView):
