@@ -31,7 +31,7 @@ class ParserDTO():
         if self.last_reports.count() != 0:
             self.status_int = self.status_int / self.last_reports.count()
 
-        self.last_results = reversed(kwargs['last_reports'])
+        self.last_reports = reversed(kwargs['last_reports'])
         self.status = "Впорядке"
         if self.status_int <= 0.5:
             self.status = "Сбои"
