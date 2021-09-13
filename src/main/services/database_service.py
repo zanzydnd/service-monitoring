@@ -1,8 +1,9 @@
 import traceback
 
 import psycopg2
+from django.utils import timezone
 
-from main.models import Result
+from main.models import Result, ParserDbCheckerResult
 
 
 def sql_execute_request(conn, database):
@@ -29,30 +30,40 @@ def sql_execute_request(conn, database):
 
 def parser_database_check(conn, parser_database):
     for request in parser_database.tables_to_check.all():
-        if request.is_empty:
-            continue
         try:
+            print(request)
             if parser_database.rmdb == "My_sql":
                 with conn.cursor(buffered=True) as cursor:
-                    element = cursor.execute(str(request))
+                    cursor.execute(str(request))
+                    element = cursor.fetchall()[0]
             else:
                 with conn.cursor() as cursor:
-                    element = cursor.execute(str(request))
+                    cursor.execute(str(request))
+                    element = cursor.fetchall()[0]
+            print(element)
+            element = [str(i) for i in element if i]
             if not request.result:
                 request.result = ''.join(element)
+                res = ParserDbCheckerResult(table=request, status="ok", description="First saving")
+                res.save()
             else:
                 new = ''.join(element)
                 if new != request.result:
                     request.result = new
-                    # сохранить со статусом ok
+                    res = ParserDbCheckerResult(table=request, status="ok", description="Ok")
+                    res.save()
                 else:
-                    # сохранить со статусом not_critical
-                    pass
+                    res = ParserDbCheckerResult(table=request, status="not_critical",
+                                                description="Не обновилась запись.")
+                    res.save()
             request.save()
             conn.commit()
-            print(element)
         except (Exception, psycopg2.DatabaseError) as e:
             conn.rollback()
             traceback.print_exc()
-            # сохранить со статусом critical.
+            res = ParserDbCheckerResult(table=request, status="critical",
+                                        description=str(e))
+            res.save()
+    parser_database.last_check = timezone.now()
+    parser_database.save()
     conn.close()

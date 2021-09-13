@@ -2,6 +2,7 @@ import datetime
 import logging
 import psycopg2
 import mysql.connector
+from django.db import models
 from django.utils import timezone
 
 from main.models import Database, Result, DatabaseFieldsToCheck, ParserDbChecker, ParserDbCheckerResult
@@ -9,7 +10,6 @@ from main.services.database_service import sql_execute_request, parser_database_
 from service_monitoring.celery import app
 
 logger = logging.getLogger(__name__)
-
 
 @app.task
 def check_databases():
@@ -34,11 +34,17 @@ def check_databases():
             result.save()
 
 
+SECONDS_IN_DAY = 24 * 60 * 60
+
+
 @app.task
 def check_parser_db():
     dbs = ParserDbChecker.objects.all()
     for db in dbs:
-        if datetime.timedelta(timezone.now() - db.last_check).seconds // 3600 >= db.check_interval_in_minutes:
+        if db.last_check:
+            time__ = (timezone.now() - db.last_check)
+        if db.last_check is None or (
+                time__.seconds + time__.days * SECONDS_IN_DAY) // 60 >= db.check_interval_in_minutes:
             try:
                 if db.rmdb == "PostgreSQL":
                     conn = psycopg2.connect(dbname=db.database_name, user=db.db_user_name,
@@ -49,9 +55,11 @@ def check_parser_db():
                 parser_database_check(conn, db)
             except (psycopg2.OperationalError, Exception) as e:
                 print(e)
-                sql_request = ParserDbCheckerResult(tablename="Connection error", is_empty=True,
-                                                    parser_db=db)
-                sql_request.save()
-                result = Result(colour="red", description="Не установлено соединение с базой данных",
-                                sql_request=sql_request)
-                result.save()
+                results_ = []
+                for table in db.tables_to_check.all():
+                    sql_request = ParserDbCheckerResult(table=table, status="critical",
+                                                        description="Нет подключения к бд.")
+                    results_.append(sql_request)
+                db.last_check = timezone.now()
+                db.save()
+                ParserDbCheckerResult.objects.bulk_create(results_)

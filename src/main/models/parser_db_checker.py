@@ -1,4 +1,5 @@
 from django.db import models
+from django.utils import timezone
 
 
 class ParserDbChecker(models.Model):
@@ -29,12 +30,11 @@ class ParserDbChecker(models.Model):
 class TablesToCheck(models.Model):
     tablename = models.CharField(max_length=1000)
     parser_db = models.ForeignKey(ParserDbChecker, on_delete=models.CASCADE, related_name="tables_to_check")
-    is_empty = models.BooleanField()
-    result = models.CharField(max_length=10000, null=True)
+    result = models.CharField(max_length=10000, null=True, blank=True)
 
     def __str__(self):
         request = ""
-        request += "select * from " + str(self.tablename) + " limit 1"
+        request += "select * from " + str(self.tablename) + " order by id desc limit 1"
         return request
 
     class Meta:
@@ -47,6 +47,7 @@ class ParserDbCheckerResult(models.Model):
     table = models.ForeignKey(TablesToCheck, on_delete=models.CASCADE, related_name="results")
     status = models.CharField(max_length=1000)
     description = models.CharField(max_length=1000)
+    created = models.DateTimeField(default=timezone.now, editable=True)
 
     class Meta:
         db_table = "parser_databases_result"
