@@ -38,13 +38,21 @@ def parser_database_check(conn, parser_database):
             else:
                 with conn.cursor() as cursor:
                     element = cursor.execute(str(request))
-            # result = Result(colour="#2fcc66", description="Ok", sql_request=request)
-            # result.save()
+            if not request.result:
+                request.result = ''.join(element)
+            else:
+                new = ''.join(element)
+                if new != request.result:
+                    request.result = new
+                    # сохранить со статусом ok
+                else:
+                    # сохранить со статусом not_critical
+                    pass
+            request.save()
             conn.commit()
             print(element)
         except (Exception, psycopg2.DatabaseError) as e:
             conn.rollback()
             traceback.print_exc()
-            # result = Result(colour="orange", description=str(e), sql_request=request)
-            # result.save()
+            # сохранить со статусом critical.
     conn.close()

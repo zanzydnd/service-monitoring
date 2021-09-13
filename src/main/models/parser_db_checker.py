@@ -30,6 +30,7 @@ class TablesToCheck(models.Model):
     tablename = models.CharField(max_length=1000)
     parser_db = models.ForeignKey(ParserDbChecker, on_delete=models.CASCADE, related_name="tables_to_check")
     is_empty = models.BooleanField()
+    result = models.CharField(max_length=10000, null=True)
 
     def __str__(self):
         request = ""
