@@ -71,4 +71,75 @@
             </div>
         {% endfor %}
     </div>
+
+     <a class="font-largest no-link">
+            Временная проверка баз данных парсеров
+     </a>
+
+    <div class="info_items">
+        {% for parser_db in parser_db_dto %}
+            <div class="info_item">
+                <div class="info_item-info">
+                    <div class="info_item-name-status">
+                        <span class="info_item-name">{{ parser_db.parser_db.parser_name }}</span>
+                        <div class="info_item-status"
+                             {% if parser_db.status == "Впорядке" %}style="color: limegreen"
+                             {% else %} style="color: red"{% endif %}>
+                            <a>{{ parser_db.status }}</a>
+                        </div>
+                    </div>
+                    <div class="info_item-shards">
+                        <div class="info__item--lines">
+                            {% for report in parser_db.last_reports %}
+
+                                {% if report.status != "ok" %}
+                                    <div class="main__vertical ">
+                                        <div class="block_vertical block__error"
+                                             style="background-color: {% if report.status == "not_critical" %} orange {% else %} red {% endif %}"></div>
+                                        <div class="popup">
+                                            <div class="popup__date">
+                                                {{ report.created }}
+                                            </div>
+                                            <div class="popup__error--block">
+                                                <h4 class="popup__error--title"></h4>
+                                                <span class="popup__error--time">
+                                    </span>
+                                            </div>
+                                            <div class="popup__text">
+                                                <h4 class="popup__text--title">Ошибка</h4>
+                                                <p class="popup__text--text">{{ report.description }}</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                {% else %}
+                                    <div class="main__vertical">
+                                        <div class="block_vertical"></div>
+                                        <div class="popup">
+                                            <div class="popup__date">
+                                                {{ report.created }}
+                                            </div>
+                                            <div class="popup__text">Ok</div>
+                                        </div>
+                                    </div>
+                                {% endif %}
+                            {% endfor %}
+
+                        </div>
+
+                        <div class="legend">
+                            <div class="legend_item">
+                                <span>{{ parser_db.count }} запросов назад</span>
+                            </div>
+                            <div class="spacer"></div>
+                            <div class="legend_item">{{ parser_db.status_int }} %</div>
+                            <div class="spacer"></div>
+                            <div class="legend_item">
+                                <span>Сейчас</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
 {% endblock %}
