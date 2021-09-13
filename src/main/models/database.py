@@ -50,8 +50,6 @@ class DatabaseFieldsToCheck(models.Model):
             if self.where_statement:
                 request += " where " + str(self.where_statement)
             request += " limit 3"
-        else:
-            pass
         return request
 
 
