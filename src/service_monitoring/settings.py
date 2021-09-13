@@ -135,4 +135,9 @@ CELERY_BEAT_SCHEDULE = {
         "schedule": crontab(minute="*/10"),
         "args": (),
     },
+    "check_parsers_db": {
+        "task": "main.tasks.check_parser_db",
+        "schedule": crontab(minute="*/1"),
+        "args": (),
+    }
 }
